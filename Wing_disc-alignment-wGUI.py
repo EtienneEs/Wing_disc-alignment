@@ -18,16 +18,26 @@ from tkinter import *
 # making it a standalone executable: pyinstaller --onefile Shinya.py
 # but i can not use the pyinstaller inside of the virtual environment!!
 
+def getfilepath(title = "Select File"):
+    root = Tk()
+    root.withdraw()
+    root.filename = filedialog.askopenfilename(initialdir="os.path.abspath(__file__))", title=title)
+    print(root.filename)
+    filename = root.filename
+    return filename
+
+
 if __name__=="__main__":
+    """
 
     root = Tk()
-    root.filename = filedialog.askopenfilename(initialdir="os.path.dirname(os.path.abspath(__file__))", title="Select file",
-                                               filetypes=(("excel files", "*.xlsx"), ("all files", "*.*")))
+    root.filename = filedialog.askopenfilename(initialdir="os.path.dirname(os.path.abspath(__file__))", title="Select file")
     print(root.filename)
     filename = root.filename
     print(filename)
     #print(os.path.dirname(os.path.abspath(__file__)))
-
+    """
+    filename = getfilepath()
     dir = os.path.dirname(filename)
 
     minimum_substraction = "yes"
