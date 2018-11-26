@@ -31,7 +31,9 @@ if __name__=="__main__":
     dir = os.path.dirname(filename)
 
     minimum_substraction = "yes"
+    outfilename = os.path.basename(filename).split(".")[0]
 
+    print(outfilename)
     # Reading in the Datafile
     file = pd.read_excel(filename, sheet_name=None)
     # creating an empty dataframe
@@ -67,7 +69,7 @@ if __name__=="__main__":
     # count the non-NAN values for each row
     df["count"] = df.iloc[:, 0:-2].count(axis=1)
     # Generate the Result excel file
-    df.to_excel("{}/Results_minimum_substraction.xlsx".format(dir), sheet_name='Minimum Substracted')
+    df.to_excel("{}/{}_Results_minimum_substraction.xlsx".format(dir, outfilename), sheet_name='Minimum Substracted')
     # df.to_csv("Results_minimum_substraction.tab", sep='\t')
     # df.to_csv("{}/Results_minimum_substraction.tsv".format(dir), sep='\t')
     df_minimum_sub = df.copy(deep=True)
@@ -110,7 +112,7 @@ if __name__=="__main__":
     # count the non-NAN values for each row
     df["count"] = df.iloc[:, 0:-2].count(axis=1)
     # Generate the Result excel file
-    df.to_excel("{}/Results_no_minimum_substraction.xlsx".format(dir), sheet_name='Minimum Substracted')
+    df.to_excel("{}/{}_Results_no_minimum_substraction.xlsx".format(dir, outfilename), sheet_name='Minimum Substracted')
     # df.to_csv("Results_no_minimum_substraction.tab", sep='\t')
     # df.to_csv("{}/Results_no_minimum_substraction.tsv".format(dir), sep='\t')
 
@@ -140,6 +142,6 @@ if __name__=="__main__":
     f3.set_title("minimum substracted")
     # f3.set_xlabel("aligned x-value")
     # f3.set_ylabel("Fluorescent intensity - average")
-    plt.savefig("{}/Plots.pdf".format(dir))
+    plt.savefig("{}/{}Plots.pdf".format(dir, outfilename))
 
     print("The Data has been processed - Awesome")
