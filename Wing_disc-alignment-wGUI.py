@@ -12,7 +12,6 @@ import os
 import sys
 from tkinter import filedialog
 from tkinter import *
-import matplotlib.pyplot as plt
 
 
 
@@ -22,13 +21,13 @@ import matplotlib.pyplot as plt
 if __name__=="__main__":
 
     root = Tk()
-    root.filename = filedialog.askopenfilename(initialdir="os.path.abspath(__file__)", title="Select file",
+    root.filename = filedialog.askopenfilename(initialdir="os.path.dirname(os.path.abspath(__file__))", title="Select file",
                                                filetypes=(("excel files", "*.xlsx"), ("all files", "*.*")))
     print(root.filename)
     filename = root.filename
     print(filename)
     #print(os.path.dirname(os.path.abspath(__file__)))
-    outfilename = os.path.basename(filename)
+
     dir = os.path.dirname(filename)
 
     minimum_substraction = "yes"
@@ -54,7 +53,7 @@ if __name__=="__main__":
             df = df1.iloc[:, 0:2]
         # if the dataframe is not empty -> merge/align the two datasets with each other on the column with name 'x0'
         else:
-            df = pd.merge(df, df1.iloc[:, 0:2], how='left', on='x0')
+            df = pd.merge(df, df1.iloc[:, 0:2], how='outer', on='x0')
         # reset df1 to an empty dataframe
         df1 = pd.DataFrame()
     # sorting the values of x0, in case that they are not properly sorted
@@ -97,7 +96,7 @@ if __name__=="__main__":
             df = df1.iloc[:, 0:2]
         # if the dataframe is not empty -> merge/align the two datasets with each other on the column with name 'x0'
         else:
-            df = pd.merge(df, df1.iloc[:, 0:2], how='left', on='x0')
+            df = pd.merge(df, df1.iloc[:, 0:2], how='outer', on='x0')
         # reset df1 to an empty dataframe
         df1 = pd.DataFrame()
     # sorting the values of x0, in case that they are not properly sorted
@@ -118,7 +117,7 @@ if __name__=="__main__":
 
     df_no_minimum = df.copy(deep=True)
 
-
+    import matplotlib.pyplot as plt
 
     # Plotting the dataframes, using subplots:
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(15, 15))

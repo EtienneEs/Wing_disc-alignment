@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 if __name__=="__main__":
 
-    config_name = 'Shinya.cfg'
+    config_name = 'Wing_disc-alighment.cfg'
 
     # determine if application is a script file or frozen exe
     if getattr(sys, 'frozen', False):
@@ -63,7 +63,7 @@ if __name__=="__main__":
             df = df1.iloc[:, 0:2]
         # if the dataframe is not empty -> merge/align the two datasets with each other on the column with name 'x0'
         else:
-            df = pd.merge(df, df1.iloc[:, 0:2], how='left', on='x0')
+            df = pd.merge(df, df1.iloc[:, 0:2], how='outer', on='x0')
         # reset df1 to an empty dataframe
         df1 = pd.DataFrame()
     # sorting the values of x0, in case that they are not properly sorted
@@ -106,7 +106,7 @@ if __name__=="__main__":
             df = df1.iloc[:, 0:2]
         # if the dataframe is not empty -> merge/align the two datasets with each other on the column with name 'x0'
         else:
-            df = pd.merge(df, df1.iloc[:, 0:2], how='left', on='x0')
+            df = pd.merge(df, df1.iloc[:, 0:2], how='outer', on='x0')
         # reset df1 to an empty dataframe
         df1 = pd.DataFrame()
     # sorting the values of x0, in case that they are not properly sorted
