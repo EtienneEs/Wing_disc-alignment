@@ -26,13 +26,17 @@ for n in range(n_cond):
         paths_cond.append(getfilepath("Select condition:"))
 
 print("Files were selected\nStart processing....")
-min_opt = str(input("Use Minimum value for normalization of the control ? (y/n/no_min)\n(n will use minimum value of the condition)\n(no_min: no minimum value will be substracted)\n>"))
+min_opt = str(input("Use Minimum value from control for normalization of all conditions? (y/n/no_min)\n(n will use minimum value of the respective condition)\n(no_min: no minimum value will be substracted)\n>"))
+
 if min_opt == "y":
     print("The Minimum value of the Condition 0 / Control will be used for all conditions")
+    n_method = "Normalization_against_min-value_from_control"
 elif min_opt == "n":
     print("The conditions are normalized with the intrinsic minimum value")
+    n_method = "Normalization_against_min-value_each_condition"
 else:
     print("The Conditions will be processed without any substraction of a minimum value")
+    n_method = "no_min_substraction"
 
 df = pd.DataFrame()
 max_value = pd.read_excel(paths_cond[0]).loc[:, "average"].max()
@@ -63,7 +67,8 @@ for n, path in enumerate(paths_cond):
 df = df.set_index("x0")
 print("All conditions were processed")
 savename = paths_cond[0].split(".")[0]
-savename_excel = "{}_Normalized_comparison.xlsx".format(savename)
+
+savename_excel = "{}_Normalized_comparison_{}.xlsx".format(savename,n_method)
 print("Saving excel file as {}".format(savename_excel))
 df.to_excel(savename_excel)
 
@@ -74,6 +79,6 @@ art=[]
 lgd = plt.legend(loc=9, bbox_to_anchor=(0.5, -0.1))
 art.append(lgd)
 print("Saving Plot")
-plt.savefig("{}_Normalized_comparison.pdf".format(savename), additional_artists=art, bbox_inches="tight")
+plt.savefig("{}_Normalized_comparison_{}.pdf".format(savename, n_method), additional_artists=art, bbox_inches="tight")
 
 print("Awesome - Comparison finished")
