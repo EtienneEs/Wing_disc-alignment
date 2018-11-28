@@ -49,12 +49,14 @@ for n, path in enumerate(paths_cond):
     # writing a new dataframe with all the necessary values
     df2["x0"] = df1.loc[:, "x0"]
     if min_opt == "y":
-        df2[name + "_average"] = (df1.loc[:, "average"]-min_value) / max_value
+        df2[name + "_average"] = (df1.loc[:, "average"]-min_value) / (max_value - min_value)
+        df2[name + "_std"] = df1.loc[:, "std"]/ (max_value - min_value)
     elif min_opt == "n":
-        df2[name + "_average"] = (df1.loc[:, "average"] - df1.loc[:, "average"].min()) / max_value
+        df2[name + "_average"] = (df1.loc[:, "average"] - df1.loc[:, "average"].min()) / (max_value - min_value)
+        df2[name + "_std"] = df1.loc[:, "std"] / (max_value - min_value)
     else:
         df2[name + "_average"] = (df1.loc[:, "average"]) / max_value
-    df2[name + "_std"] = df1.loc[:, "std"]
+    df2[name + "_std_original"] = df1.loc[:, "std"]
     df2[name + "_count"] = df1.loc[:, "count"]
 
     # extracting the maximum value of the control
