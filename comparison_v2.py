@@ -65,12 +65,14 @@ for n, path in enumerate(paths_cond):
     else:
         print("Merging Data")
         df = pd.merge(df, df2, how="outer", on="x0")
+        # sorting the values of x0, in case that the second df2 has smaller values than df
+        df = df.sort_values(by="x0", ascending=True)
 
 df = df.set_index("x0")
 print("All conditions were processed")
 savename = paths_cond[0].split(".")[0]
 
-savename_excel = "{}_Normalized_comparison_{}.xlsx".format(savename,n_method)
+savename_excel = "{}_{}.xlsx".format(savename,n_method)
 print("Saving excel file as {}".format(savename_excel))
 df.to_excel(savename_excel)
 
@@ -81,6 +83,6 @@ art=[]
 lgd = plt.legend(loc=9, bbox_to_anchor=(0.5, -0.1))
 art.append(lgd)
 print("Saving Plot")
-plt.savefig("{}_Normalized_comparison_{}.pdf".format(savename, n_method), additional_artists=art, bbox_inches="tight")
+plt.savefig("{}_{}.pdf".format(savename, n_method), additional_artists=art, bbox_inches="tight")
 
 print("Awesome - Comparison finished")
