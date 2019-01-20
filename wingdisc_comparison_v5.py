@@ -1,11 +1,14 @@
 print("loading complete")
+print("""
+Wingdisc comparison script
+Version 5, for mac
+Release date: 20.01.2019
+""")
 import pandas as pd
 import os
 
 from tkinter import filedialog
 from tkinter import *
-
-
 
 def getfilepath(title = "Select File"):
     root = Tk()
@@ -30,39 +33,48 @@ min_opt = str(input("Use Minimum value from control for normalization of all con
 
 if min_opt == "y":
     print("The Minimum value of the Condition 0 / Control will be used for all conditions")
-    n_method = "Normalization_against_min-value_from_control"
+    #n_method = "Normalization_against_min-value_from_control"
+    n_method = "y"
 elif min_opt == "n":
     print("The conditions are normalized with the intrinsic minimum value")
-    n_method = "Normalization_against_min-value_each_condition"
+    #n_method = "Normalization_against_min-value_each_condition"
+    n_method = "y"
 else:
     print("The Conditions will be processed without any substraction of a minimum value")
-    n_method = "no_min_substraction"
+    #n_method = "no_min_substraction"
+    n_method = "no_min"
 
 df = pd.DataFrame()
 max_value = pd.read_excel(paths_cond[0]).loc[:, "average"].max()
 min_value = pd.read_excel(paths_cond[0]).loc[:, "average"].min()
 for n, path in enumerate(paths_cond):
     print("Processing Condition {}".format(n))
+    # reading in the excel file
     df1 = pd.read_excel(path)
     df2 = pd.DataFrame()
     name = os.path.basename(path).split(".")[0]
     # writing a new dataframe with all the necessary values
     df2["x0"] = df1.loc[:, "x0"]
     if min_opt == "y":
+        # normalization against the minimum value of the control
         df2[name + "_average"] = (df1.loc[:, "average"]-min_value) / (max_value - min_value)
         df2[name + "_std"] = df1.loc[:, "std"]/ (max_value - min_value)
     elif min_opt == "n":
+        # Normalization against the minimum value of each condition
         df2[name + "_average"] = (df1.loc[:, "average"] - df1.loc[:, "average"].min()) / (max_value - min_value)
         df2[name + "_std"] = df1.loc[:, "std"] / (max_value - min_value)
     else:
+        # no minimum substraction
         df2[name + "_average"] = (df1.loc[:, "average"]) / max_value
     df2[name + "_std_original"] = df1.loc[:, "std"]
     df2[name + "_count"] = df1.loc[:, "count"]
 
-    # extracting the maximum value of the control
+    # Constructing the final dataset
     if n == 0:
+        # control will be the first dataset
         df = df2
     else:
+        # other conditions are added to the dataset df
         print("Merging Data")
         df = pd.merge(df, df2, how="outer", on="x0")
         # sorting the values of x0, in case that the second df2 has smaller values than df
@@ -86,3 +98,19 @@ print("Saving Plot")
 plt.savefig("{}_{}.pdf".format(savename, n_method), additional_artists=art, bbox_inches="tight")
 
 print("Awesome - Comparison finished")
+print("""
+                    Exterminate!
+                   /
+      _n__n__
+     /       \===V==<D
+    /_________\\
+     |   |   |
+    ------------               This script was
+    |  || || || \+++----<(     written for you
+    =============              by Etienne Schmelzer
+    | O | O | O |
+   (| O | O | O |\)
+    | O | O | O | \\
+   (| O | O | O | O\)
+ ======================
+""")
