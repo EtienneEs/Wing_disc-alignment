@@ -1,14 +1,24 @@
+"""
+This script combines datasets of previously aligned wing disc Intensity values.
+It allows to select a control and (unlimited) mutant conditions
+to combine, compare and plot them with each other. Optionally the operator can choose
+if the datasets are normalized with the minimum of the control (y),
+the minimum of the sample/mutant dataset (n) or no normalization is performed (no_min).
+The output is an excel file containing the combined datasets and a PDF containing the comparison plots.
+This script was written for Shinya Matsuda by Etienne Schmelzer
+"""
+
+import pandas as pd
+import os
+from tkinter import filedialog
+from tkinter import *
+
 print("loading complete")
 print("""
 Wingdisc comparison script
 Version 5, for mac
 Release date: 20.01.2019
 """)
-import pandas as pd
-import os
-
-from tkinter import filedialog
-from tkinter import *
 
 def getfilepath(title = "Select File"):
     root = Tk()

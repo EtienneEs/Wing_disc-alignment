@@ -1,4 +1,3 @@
-
 '''
 This script takes an excel file witn samples in sheets.
 It corrects the x-values with a given value x0-r and aligns the x values of each sample to each other.
@@ -6,6 +5,8 @@ Further the average and Standard Deviation are calculated.
 The Script has been written for Shinya Matsuda by Etienne Schmelzer.
 '''
 
+# Note: If you want to use this script with Jupyter Notebook:
+# disable Tkinter function and read in file paths manually.
 
 import pandas as pd
 import os
@@ -13,9 +14,7 @@ import sys
 from tkinter import filedialog
 from tkinter import *
 
-
-
-# making it a standalone executable: pyinstaller --onefile Shinya.py
+# making it a standalone executable: pyinstaller --onefile filename.py
 # but i can not use the pyinstaller inside of the virtual environment!!
 
 def getfilepath(title = "Select File"):
@@ -26,10 +25,8 @@ def getfilepath(title = "Select File"):
     filename = root.filename
     return filename
 
-
 if __name__=="__main__":
     """
-
     root = Tk()
     root.filename = filedialog.askopenfilename(initialdir="os.path.dirname(os.path.abspath(__file__))", title="Select file")
     print(root.filename)
@@ -126,9 +123,10 @@ if __name__=="__main__":
     # df.to_csv("Results_no_minimum_substraction.tab", sep='\t')
     # df.to_csv("{}/Results_no_minimum_substraction.tsv".format(dir), sep='\t')
 
-
     df_no_minimum = df.copy(deep=True)
 
+    # Tkinter and matplotlib seem to be incompatible if imported simultaneously.
+    # Later import of matplotlib solves the issue.
     import matplotlib.pyplot as plt
 
     # Plotting the dataframes, using subplots:
