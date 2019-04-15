@@ -48,7 +48,7 @@ if min_opt == "y":
 elif min_opt == "n":
     print("The conditions are normalized with the intrinsic minimum value")
     #n_method = "Normalization_against_min-value_each_condition"
-    n_method = "y"
+    n_method = "n"
 else:
     print("The Conditions will be processed without any substraction of a minimum value")
     #n_method = "no_min_substraction"
