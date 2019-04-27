@@ -1,4 +1,4 @@
-# Automated wing imaginal disc analysis in _drosophila melanogaster_
+# Automated analysis of _drosophila melanogaster_ wing imaginal disc intensity measurements
 This Project is a collaboration with Shinya Matsuda. The aim of this 
 project is to facilitate the analysis and comparison of intensity 
 measurements of wing discs. Two scripts were generated for this project.
@@ -7,7 +7,7 @@ measurements of wing discs. Two scripts were generated for this project.
 
 ## Automated alignment of wing imaginal disc intensity measurements
 The script [wing_disc-alignment.py](../blob/master/wing_disc-alignment.py)
-takes one or multiple excel file(s) like [wingdiscs.xlsx](../blob/master/wingdiscs.xlsx))
+takes one or multiple excel file(s) like [wingdiscs.xlsx](../blob/master/wingdiscs.xlsx)
 as input. One excel files corresponds to one experimental condition (e.g. WT).
 Each sheet of this Excel file corresponds to one analysed wing imaginal disc, containing
 the x-value, the intensity value and the x-correction value. The x-correction value
@@ -18,6 +18,8 @@ intensity value. (This normalization does not change the relative Intensity diff
 therefore the Intensity profile is not changed.) For both datasets/databases the average, the standard 
 deviation and the number of values in each row are calculated. Further the database is 
 exported as excel file and a comparison plot is generated.
+
+NEW FEATURE: You can pick as many experiments as you want at once, it will process them one after the other !!!
 
 In order to facilitate the analysis for the User, standalone executables
 for Windows and macOS were generated. This allows any (macOS or windows) 
