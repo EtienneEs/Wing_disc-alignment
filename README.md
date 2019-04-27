@@ -30,10 +30,11 @@ for Windows and macOS were generated. This allows any (macOS or windows)
 user to operate the programs without prior installation of Python.
 
 Example excel files for this script:
-[wing_discs][1.1]
-[Experiment_X_control][1.2]
-[Experiment_X_condition1][1.3]
+- [wing_discs][1.1]
+- [Experiment_X_control][1.2]
+- [Experiment_X_condition1][1.3]
 
+Comparison Plot of [wing_disc-alignment.py][1]:
 ![wing_discs_plot][p1]
 
 
@@ -61,7 +62,7 @@ questions, don't hesistate to contact me!!
 [1.1]: ../master/wing_discs.xlsx
 [1.2]: ../master/Experiment_X_control.xlsx
 [1.3]: ../master/Experiment_X_condition1.xlsx
-[p1]: ../master/wing_discs_plots.pdf
+[p1]: ../master/wing_discs_plots.
 
 [2]: ../master/wingdisc_comparison_v5.py
 
