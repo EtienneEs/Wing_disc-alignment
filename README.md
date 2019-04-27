@@ -29,6 +29,12 @@ In order to facilitate the analysis for the User, standalone executables
 for Windows and macOS were generated. This allows any (macOS or windows) 
 user to operate the programs without prior installation of Python.
 
+Example excel files for this script:
+[wing_discs][1.1]
+[Experiment_X_control][2.1]
+[Experiment_X_condition1][2.2]
+
+
 
 ## Automated merge and comparison of multiple datasets
 The results generated with [wing_disc-alignment.py][1] can further be analysed with 
@@ -51,7 +57,9 @@ If you would like me to automate your (tedious ;) analysis or you have
 questions, don't hesistate to contact me!!
 
 [1]: ../master/wing_disc-alignment.py
-[1.1]: ../master/wingdiscs.xlsx
+[1.1]: ../master/wing_discs.xlsx
+[1.2]: ../master/Experiment_X_control.xlsx
+[1.3]: ../master/Experiment_X_condition1.xlsx
+
 [2]: ../master/wingdisc_comparison_v5.py
-[2.1]: 
-[2.2]:
+
