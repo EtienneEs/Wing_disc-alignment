@@ -12,10 +12,14 @@ as input. One excel files corresponds to one experimental condition (e.g. WT).
 Each sheet of this Excel file corresponds to one analysed wing imaginal disc, containing
 the x-value, the intensity value and the x-correction value. The x-correction value
 will be used to normalize the x-values. Once the data is preprocessed it will be merged 
-and aligned in two databases. In database one __<name>\_no\_min_sub.xlsx__ the raw data loaded.
-In the second database __<name>\_min\_sub__, the intensity is normalized by substraction of the minimum
-intensity value. (This normalization does not change the relative Intensity differences 
-therefore the Intensity profile is not changed.) For both datasets/databases the average, the standard 
+and aligned in two databases: 
+
+- __filename_min_sub.xlsx__ the intensity of each wing imaginal disc is normalized. The intensity values
+ are subsrtracted with the lowest intensity value of the set/wing imaginal disc. 
+- __filename_no\_min\_sub.xlsx__ no normalization is performed
+
+This normalization does not change the relative Intensity differences, 
+therefore the Intensity profile is not changed. For both datasets/databases the average, the standard 
 deviation and the number of values in each row are calculated. Further the database is 
 exported as excel file and a comparison plot is generated.
 
@@ -27,8 +31,8 @@ user to operate the programs without prior installation of Python.
 
 
 ## Automated merge and comparison of multiple datasets
-The results generated with [wing_disc-alignment.py](../blob/master/wing_disc-alignment.py) can further be analysed with 
-[wingdisc_comparision.py](../blob/master/wingdisc_comparison_v5.py).
+The results generated with [wing_disc-alignment.py](../wing_disc-alignment.py) can further be analysed with 
+[wingdisc_comparision.py](../wingdisc_comparison_v5.py).
 This script will normalize the data according to the operator’s choices and combine the different experimental 
 conditions in one excel file. It allows to select a control (e.g. wild type expression pattern) with (unlimited) mutant 
 conditions. Based on Shinya Matsuda’s needs, the following options were integrated: The operator can choose between three
