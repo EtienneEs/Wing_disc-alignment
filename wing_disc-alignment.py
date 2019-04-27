@@ -129,25 +129,25 @@ def HarryPlotter(dir, outfilename, df_no_minimum, df_minimum_sub):
     # Plotting the dataframes, using subplots:
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(15, 15))
     f0 = df_no_minimum.iloc[:, :-3].plot(ax=axes[0, 0])
-    f0.set_title("no minimum substraction")
+    f0.set_title("No minimum substraction")
     f0.set_xlabel("x")
     f0.set_ylabel("Fluorescent intensity")
 
     f1 = df_no_minimum.iloc[:, -3].plot(ax=axes[1, 0])
-    f1.set_title("no minimum substraction")
+    f1.set_title("No minimum substraction - Average")
     f1.set_xlabel("x")
     f1.set_ylabel("Fluorescent intensity")
 
     f2 = df_minimum_sub.iloc[:, :-3].plot(ax=axes[0, 1])
-    f2.set_title("minimum substracted")
+    f2.set_title("Minimum substracted")
     f2.set_xlabel("x")
     f2.set_ylabel("Fluorescent intensity")
 
     f3 = df_minimum_sub.iloc[:, -3].plot(ax=axes[1, 1])
-    f3.set_title("minimum substracted")
+    f3.set_title("Minimum substracted - Average")
     f3.set_xlabel("x")
     f3.set_ylabel("Fluorescent intensity")
-    plt.savefig("{}/{}Plots.pdf".format(dir, outfilename))
+    plt.savefig("{}/{}_plots.pdf".format(dir, outfilename))
 
 if __name__=="__main__":
 
@@ -159,7 +159,8 @@ if __name__=="__main__":
     # Ask if to store in a subfolder
     bool_from_user = messagebox.askyesno("Please Choose:",
                                         "Do you desire to store your Results in a subfolder?")
-    print("2")
+    root.quit()
+    #root.destroy()
     for filename in filenames:
 
 
@@ -168,7 +169,7 @@ if __name__=="__main__":
 
         # Samplename
         outfilename = os.path.basename(filename).split(".")[0]
-        print(outfilename)
+        print("Processing file: " + outfilename)
 
         df_minimum_sub=align_wingdiscs(filename, min_sub=True)
         # now without minimum substraction
@@ -194,4 +195,3 @@ if __name__=="__main__":
        (| O | O | O | O\)
      ======================
     """)
-    root.destroy()
