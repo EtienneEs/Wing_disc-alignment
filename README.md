@@ -2,12 +2,12 @@
 This Project is a collaboration with Shinya Matsuda. The aim of this 
 project is to facilitate the analysis and comparison of intensity 
 measurements of wing discs. Two scripts were generated for this project.
-- [wing_disc-alignment.py](../blob/master/wing_disc-alignment.py)
-- [wingdisc_comparision.py](../blob/master/wingdisc_comparison_v5.py)
+- [wing_disc-alignment.py][1]
+- [wingdisc_comparision.py][2]
 
 ## Automated alignment of wing imaginal disc intensity measurements
-The script [wing_disc-alignment.py](../blob/master/wing_disc-alignment.py)
-takes one or multiple excel file(s) like [wingdiscs.xlsx](../blob/master/wingdiscs.xlsx)
+The script [wing_disc-alignment.py][1]
+takes one or multiple excel file(s) like [wingdiscs.xlsx][1.1]
 as input. One excel files corresponds to one experimental condition (e.g. WT).
 Each sheet of this Excel file corresponds to one analysed wing imaginal disc, containing
 the x-value, the intensity value and the x-correction value. The x-correction value
@@ -31,8 +31,8 @@ user to operate the programs without prior installation of Python.
 
 
 ## Automated merge and comparison of multiple datasets
-The results generated with [wing_disc-alignment.py](../wing_disc-alignment.py) can further be analysed with 
-[wingdisc_comparision.py](../wingdisc_comparison_v5.py).
+The results generated with [wing_disc-alignment.py][1] can further be analysed with 
+[wingdisc_comparision.py][2].
 This script will normalize the data according to the operator’s choices and combine the different experimental 
 conditions in one excel file. It allows to select a control (e.g. wild type expression pattern) with (unlimited) mutant 
 conditions. Based on Shinya Matsuda’s needs, the following options were integrated: The operator can choose between three
@@ -50,3 +50,8 @@ This allows any (macOS or windows) user to operate the programs without prior in
 If you would like me to automate your (tedious ;) analysis or you have 
 questions, don't hesistate to contact me!!
 
+[1]: ../master/wing_disc-alignment.py
+[1.1]: ../master/wingdiscs.xlsx
+[2]: ../master/wingdisc_comparison_v5.py
+[2.1]: 
+[2.2]:
