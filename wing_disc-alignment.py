@@ -28,9 +28,9 @@ def getfilepath(title = "Select File"):
     Generates a Popup window for the user to choose the filepath. If no file is selected,
     the program will stop.
     :param title: Title displayed in the Popupwindow (only in LINUX and Windows)
-    :return: str, complete filepath
+    :return: tuple, complete filepath
     """
-    filename = filedialog.askopenfilename(initialdir="os.path.abspath(__file__))", title=title)
+    filename = filedialog.askopenfilenames(initialdir="os.path.abspath(__file__))", title=title)
     print(filename)
 
     if filename == "":
@@ -121,27 +121,7 @@ def align_wingdiscs(filename, min_sub):
     # df.to_csv("{}/Results_minimum_substraction.tsv".format(dir), sep='\t')
     return df
 
-if __name__=="__main__":
-
-    root=Tk()
-    root.withdraw()
-
-    # Read in filename
-    filename = getfilepath("Please select your file")
-    # Ask if to store in a subfolder
-    bool_from_user = messagebox.askyesno("Please Choose:",
-                                        "Do you desire to store your Results in a subfolder?")
-    # depending on user choice selection of the destination directory
-    dir = create_subfolder(bool_from_user, filename, "_aligned")
-
-    # Samplename
-    outfilename = os.path.basename(filename).split(".")[0]
-    print(outfilename)
-
-    df_minimum_sub=align_wingdiscs(filename, min_sub=True)
-    # now without minimum substraction
-    df_no_minimum=align_wingdiscs(filename, min_sub=False)
-
+def HarryPlotter(dir, outfilename, df_no_minimum, df_minimum_sub):
     # Tkinter and matplotlib seem to be incompatible if imported simultaneously.
     # Later import of matplotlib solves the issue.
     import matplotlib.pyplot as plt
@@ -168,6 +148,33 @@ if __name__=="__main__":
     f3.set_xlabel("x")
     f3.set_ylabel("Fluorescent intensity")
     plt.savefig("{}/{}Plots.pdf".format(dir, outfilename))
+
+if __name__=="__main__":
+
+    root=Tk()
+    root.withdraw()
+
+    # Read in filename
+    filenames = getfilepath("Please select your file(s)")
+    # Ask if to store in a subfolder
+    bool_from_user = messagebox.askyesno("Please Choose:",
+                                        "Do you desire to store your Results in a subfolder?")
+    print("2")
+    for filename in filenames:
+
+
+        # depending on user choice selection of the destination directory
+        dir = create_subfolder(bool_from_user, filename, "_aligned")
+
+        # Samplename
+        outfilename = os.path.basename(filename).split(".")[0]
+        print(outfilename)
+
+        df_minimum_sub=align_wingdiscs(filename, min_sub=True)
+        # now without minimum substraction
+        df_no_minimum=align_wingdiscs(filename, min_sub=False)
+
+        HarryPlotter(dir, outfilename, df_no_minimum, df_minimum_sub)
 
     print("\nThe Data has been processed - Awesome\n")
 
