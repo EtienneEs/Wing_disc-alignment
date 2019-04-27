@@ -62,7 +62,8 @@ questions, don't hesistate to contact me!!
 [1.1]: ../master/wing_discs.xlsx
 [1.2]: ../master/Experiment_X_control.xlsx
 [1.3]: ../master/Experiment_X_condition1.xlsx
-[p1]: ../master/wing_discs_plots.
+
+[p1]: ../master/wing_discs_plots.png
 
 [2]: ../master/wingdisc_comparison_v5.py
 
