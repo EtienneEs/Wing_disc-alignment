@@ -5,42 +5,79 @@ Further the average and Standard Deviation are calculated.
 The Script has been written for Shinya Matsuda by Etienne Schmelzer.
 '''
 
-# Note: If you want to use this script with Jupyter Notebook:
-# disable Tkinter function and read in file paths manually.
+# to improve compatibility with jupyter notebook decomment:
+#%gui tk
 
 import pandas as pd
 import os
-import sys
 from tkinter import filedialog
 from tkinter import *
+from tkinter import messagebox
+
+print("""
+Wingdisc alignment
+Version 5, for mac
+Release date: 27.04.2019
+""")
 
 # making it a standalone executable: pyinstaller --onefile filename.py
 # but i can not use the pyinstaller inside of the virtual environment!!
 
 def getfilepath(title = "Select File"):
-    root = Tk()
-    root.withdraw()
-    root.filename = filedialog.askopenfilename(initialdir="os.path.abspath(__file__))", title=title)
-    print(root.filename)
-    filename = root.filename
+    """
+    Generates a Popup window for the user to choose the filepath. If no file is selected,
+    the program will stop.
+    :param title: Title displayed in the Popupwindow (only in LINUX and Windows)
+    :return: str, complete filepath
+    """
+    filename = filedialog.askopenfilename(initialdir="os.path.abspath(__file__))", title=title)
+    print(filename)
+
+    if filename == "":
+        print("No file was selected")
+        quit(0)
     return filename
 
-if __name__=="__main__":
+def make_folder(path):
     """
-    root = Tk()
-    root.filename = filedialog.askopenfilename(initialdir="os.path.dirname(os.path.abspath(__file__))", title="Select file")
-    print(root.filename)
-    filename = root.filename
-    print(filename)
-    #print(os.path.dirname(os.path.abspath(__file__)))
+    Will check if directory exists and if not create it
+    :param path: str 
     """
-    filename = getfilepath()
-    dir = os.path.dirname(filename)
+    if not os.path.exists(path):
+        os.makedirs(path)
 
-    minimum_substraction = "yes"
-    outfilename = os.path.basename(filename).split(".")[0]
+def create_subfolder(bool, filename, suffix):
+    if bool == "y" or bool == True:
+        # We will create a directory with the same name as the original file
+        directory = filename.split(".")[0]
+        # Name of the subdirectory
+        directory = directory + suffix
+        make_folder(directory)
 
-    print(outfilename)
+    else:
+        directory = os.path.dirname(filename)
+    return directory
+
+
+def align_wingdiscs(filename, min_sub):
+    """
+    Takes an Excel file with multiple sheets as input.
+    Each sheet represents an individual wingdisc, with x coordinates,
+    intensity values and an x_correction value.
+    The x-values are corrected with x-corr (alignment of each wingdisc on x).
+    Choice: min_sub:
+
+    True: minimum Intensity value of the individual wingdisc is substracted
+    False: no minimum substraction of the Intensity values.
+
+    Then the intensity values are merged into a complete database, containing
+    all values. Further average, standard deviation and number of sample per row
+    is calculated.
+    The database is returned
+    :param filename: str
+    :param min_sub: boolean
+    :return: pd.DataFrame
+    """
     # Reading in the Datafile
     file = pd.read_excel(filename, sheet_name=None)
     # creating an empty dataframe
@@ -55,7 +92,7 @@ if __name__=="__main__":
         print("Sample {} is processed; Sheetname: '{}' \nwith x-axis correction of {} ".format(index, sheetname, xcor))
         # adjusting x-axis/x0 with x0_r/the xcor factor
         df1["x0"] = (df1["x0"] - xcor).round(1)
-        if minimum_substraction == "yes":
+        if min_sub == True:
             df1[df1.columns[1]] = df1.iloc[:, 1] - df1.iloc[:, 1].min()
 
         if df.empty:
@@ -76,54 +113,34 @@ if __name__=="__main__":
     # count the non-NAN values for each row
     df["count"] = df.iloc[:, 0:-2].count(axis=1)
     # Generate the Result excel file
-    df.to_excel("{}/{}_Results_minimum_substraction.xlsx".format(dir, outfilename), sheet_name='Minimum Substracted')
+    if min_sub == True:
+        choice=""
+    else: choice="_no"
+    df.to_excel("{}/{}{}_min_sub.xlsx".format(dir, outfilename, choice), sheet_name='no Minimum Substracted'.format(choice))
     # df.to_csv("Results_minimum_substraction.tab", sep='\t')
     # df.to_csv("{}/Results_minimum_substraction.tsv".format(dir), sep='\t')
-    df_minimum_sub = df.copy(deep=True)
+    return df
 
+if __name__=="__main__":
+
+    root=Tk()
+    root.withdraw()
+
+    # Read in filename
+    filename = getfilepath("Please select your file")
+    # Ask if to store in a subfolder
+    bool_from_user = messagebox.askyesno("Please Choose:",
+                                        "Do you desire to store your Results in a subfolder?")
+    # depending on user choice selection of the destination directory
+    dir = create_subfolder(bool_from_user, filename, "_aligned")
+
+    # Samplename
+    outfilename = os.path.basename(filename).split(".")[0]
+    print(outfilename)
+
+    df_minimum_sub=align_wingdiscs(filename, min_sub=True)
     # now without minimum substraction
-    minimum_substraction = "no"
-
-    # Reading in the Datafile
-    file = pd.read_excel(filename, sheet_name=None)
-    # creating an empty dataframe
-    df = pd.DataFrame()
-    # for loop iterating through the Sheets / Samples in the excel file
-    for index, sheetname in enumerate(file):
-        # reading in the data of the sheet with sheetname
-        df1 = file[sheetname]
-        # defining the xcor factor specific for this sample
-        xcor = df1.iloc[0, 2]
-        # Progress report, which sample is beeing processed
-        print("Sample {} is processed; Sheetname: '{}' \nwith x-axis correction of {} ".format(index, sheetname, xcor))
-        # adjusting x-axis/x0 with x0_r/the xcor factor
-        df1["x0"] = (df1["x0"] - xcor).round(1)
-        if minimum_substraction == "yes":
-            df1[df1.columns[1]] = df1.iloc[:, 1] - df1.iloc[:, 1].min()
-
-        if df.empty:
-            df = df1.iloc[:, 0:2]
-        # if the dataframe is not empty -> merge/align the two datasets with each other on the column with name 'x0'
-        else:
-            df = pd.merge(df, df1.iloc[:, 0:2], how='outer', on='x0')
-        # reset df1 to an empty dataframe
-        df1 = pd.DataFrame()
-    # sorting the values of x0, in case that they are not properly sorted
-    df = df.sort_values(by="x0", ascending=True)
-    # set the index of the dataframe to the column "x0"
-    df = df.set_index("x0")
-    # calculate the average of the each row
-    df["average"] = df.mean(axis=1)
-    # calculate the standard deviation for each row
-    df["std"] = df.iloc[:, :-1].std(axis=1)
-    # count the non-NAN values for each row
-    df["count"] = df.iloc[:, 0:-2].count(axis=1)
-    # Generate the Result excel file
-    df.to_excel("{}/{}_Results_no_minimum_substraction.xlsx".format(dir, outfilename), sheet_name='Minimum Substracted')
-    # df.to_csv("Results_no_minimum_substraction.tab", sep='\t')
-    # df.to_csv("{}/Results_no_minimum_substraction.tsv".format(dir), sep='\t')
-
-    df_no_minimum = df.copy(deep=True)
+    df_no_minimum=align_wingdiscs(filename, min_sub=False)
 
     # Tkinter and matplotlib seem to be incompatible if imported simultaneously.
     # Later import of matplotlib solves the issue.
@@ -133,23 +150,41 @@ if __name__=="__main__":
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(15, 15))
     f0 = df_no_minimum.iloc[:, :-3].plot(ax=axes[0, 0])
     f0.set_title("no minimum substraction")
-    # f0.set_xlabel("aligned x-value")
-    # f0.set_ylabel("Fluorescent intensity")
+    f0.set_xlabel("x")
+    f0.set_ylabel("Fluorescent intensity")
 
     f1 = df_no_minimum.iloc[:, -3].plot(ax=axes[1, 0])
     f1.set_title("no minimum substraction")
-    # f1.set_xlabel("aligned x-value")
-    # f1.set_ylabel("Fluorescent intensity - average")
+    f1.set_xlabel("x")
+    f1.set_ylabel("Fluorescent intensity")
 
     f2 = df_minimum_sub.iloc[:, :-3].plot(ax=axes[0, 1])
     f2.set_title("minimum substracted")
-    # f2.set_xlabel("aligned x-value")
-    # f2.set_ylabel("Fluorescent intensity")
+    f2.set_xlabel("x")
+    f2.set_ylabel("Fluorescent intensity")
 
     f3 = df_minimum_sub.iloc[:, -3].plot(ax=axes[1, 1])
     f3.set_title("minimum substracted")
-    # f3.set_xlabel("aligned x-value")
-    # f3.set_ylabel("Fluorescent intensity - average")
+    f3.set_xlabel("x")
+    f3.set_ylabel("Fluorescent intensity")
     plt.savefig("{}/{}Plots.pdf".format(dir, outfilename))
 
-    print("The Data has been processed - Awesome")
+    print("\nThe Data has been processed - Awesome\n")
+
+    print("""
+                        Exterminate!
+                       /
+          _n__n__
+         /       \===V==<D
+        /_________\\
+         |   |   |
+        ------------               This script was
+        |  || || || \+++----<(     written for you
+        =============              by Etienne Schmelzer
+        | O | O | O |
+       (| O | O | O |\)
+        | O | O | O | \\
+       (| O | O | O | O\)
+     ======================
+    """)
+    root.destroy()
