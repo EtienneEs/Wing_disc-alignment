@@ -5,6 +5,8 @@ measurements of wing discs. Two scripts were generated for this project.
 - [wing_disc-alignment.py][1]
 - [wingdisc_comparision.py][2]
 
+  [_> How to make it an app_](#appmaker)
+
 ## Automated alignment of wing imaginal disc intensity measurements
 The script [wing_disc-alignment.py][1]
 takes one or multiple excel file(s) like [wingdiscs.xlsx][1.1]
@@ -55,8 +57,30 @@ Additionally, a Summary Plot is generated automatically for quick control and an
 In order to facilitate the analysis for the User, standalone executables for Windows and macOS were generated.
 This allows any (macOS or windows) user to operate the programs without prior installation of Python.
 
+<a name="appmaker"></a>
+
+## How to make the scripts an app:
+Install anaconda python 3.XX
+open terminal/Command line and create the virtual environment:
+```
+conda create --name appmaker matplotlib pandas tk xlrd openpyxl pyinstaller
+```
+cd to the the directory of the python script and activate the virtual environment:
+```
+conda activate appmaker
+pyinstaller --onefile scriptname.py
+conda deactivate
+```
+
+The executable will be in the "dist" folder. 
+If you would like to remove the virtual environment:
+```
+conda remove --name appmaker --all
+conda info --envs
+```
+
 If you would like me to automate your (tedious ;) analysis or you have 
-questions, don't hesistate to contact me!!
+questions, don't hesitate to contact me!!
 
 [1]: ../master/wing_disc-alignment.py
 [1.1]: ../master/wing_discs.xlsx
