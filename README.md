@@ -37,7 +37,7 @@ Example excel files for this script:
 - [Experiment_X_condition1][1.3]
 
 Comparison Plot of [wing_disc-alignment.py][1]:
-![wing_discs_plot][p1]
+![wing_discs_plot](wing_discs_plots.png)
 
 
 ## Automated merge and comparison of multiple datasets
